@@ -1,5 +1,6 @@
 require 'rspec'
 require File.expand_path("rspec/helper", File.dirname(__FILE__))
+require File.expand_path("rspec/html_formatter", File.dirname(__FILE__))
 
 module Watir
   # add #within(timeout) and #during(timeout) methods for every matcher for allowing to wait until some condition is met.

@@ -94,29 +94,55 @@ module Watir
           end
         end
       end
-    end
 
-    # patch for #within(timeout) method
-    module ::RSpec::Matchers
-      class BuiltIn::Change
-        def matches?(event_proc)
-          raise_block_syntax_error if block_given?
-
-          # to make #change work with #in(timeout) method
-          unless defined? @actual_before
-            @actual_before = evaluate_value_proc
-            event_proc.call
-          end
-          @actual_after = evaluate_value_proc
-
-          (!change_expected? || changed?) && matches_before? && matches_after? && matches_expected_delta? && matches_min? && matches_max?
-        end
+      def file_path(file_name, description=nil)
+        formatter.file_path(file_name, description=nil)
       end
 
-      alias_method :make, :change
+      private
+
+      def formatter
+        @formatter ||= begin
+                         formatter = ::RSpec.configuration.formatters.find {|f| f.kind_of? Watir::RSpec::HtmlFormatter}
+                         unless formatter
+                           raise <<-EOF
+Watir::RSpec::HtmlFormatter is not set as a RSpec formatter.
+
+You need to add it into your spec_helper.rb file like this:
+  RSpec.configure do |config|
+    config.add_formatter('documentation')
+    config.add_formatter(Watir::RSpec::HtmlFormatter)
+  end
+EOF
+                         end
+                         formatter
+                       end
+      end
+
+
     end
 
   end
+end
+
+# patch for #within(timeout) method
+module ::RSpec::Matchers
+  class BuiltIn::Change
+    def matches?(event_proc)
+      raise_block_syntax_error if block_given?
+
+      # to make #change work with #in(timeout) method
+      unless defined? @actual_before
+        @actual_before = evaluate_value_proc
+        event_proc.call
+      end
+      @actual_after = evaluate_value_proc
+
+      (!change_expected? || changed?) && matches_before? && matches_after? && matches_expected_delta? && matches_min? && matches_max?
+    end
+  end
+
+  alias_method :make, :change
 end
 
 matchers = RSpec::Matchers::BuiltIn.constants.map(&:to_sym)

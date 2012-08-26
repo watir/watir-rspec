@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/watir-rspec/version', __FILE__)
+require File.expand_path('../lib/watir/rspec/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Jarmo Pertman"]
@@ -13,5 +13,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "watir-rspec"
   gem.require_paths = ["lib"]
-  gem.version       = Watir::Rspec::VERSION
+  gem.version       = Watir::RSpec::VERSION
+
+  gem.add_dependency "rspec", "~>2.0"
 end

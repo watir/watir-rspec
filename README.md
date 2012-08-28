@@ -4,9 +4,11 @@ Use Watir with RSpec with ease.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add these lines to your application's Gemfile:
 
-    gem 'watir-rspec'
+    group :test do
+      gem 'watir-rspec'
+    end
 
 And add these lines to your spec\_helper.rb file:
 

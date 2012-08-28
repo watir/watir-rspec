@@ -4,9 +4,9 @@ require File.expand_path('../lib/watir/rspec/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Jarmo Pertman"]
   gem.email         = ["jarmo.p@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Use Watir with RSpec with ease.}
+  gem.summary       = %q{Use Watir with RSpec with ease.}
+  gem.homepage      = "http://github.com/watir/watir-rspec"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

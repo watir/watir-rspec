@@ -9,6 +9,7 @@ Add this line to your application's Gemfile:
     gem 'watir-rspec'
 
 And add these lines to your spec\_helper.rb file:
+
     RSpec.configure do |config|
       # Add Watir::RSpec::HtmlFormatter to get links to the screenshots, html and
       # all other files created during the failing examples.

@@ -3,11 +3,15 @@ module Watir
     module Helper
       extend Forwardable
 
+      def browser
+        @browser || $browser
+      end
+
       def method_missing name, *args #:nodoc:
-        if @browser.respond_to?(name)
+        if browser.respond_to?(name)
           Helper.module_eval %Q[
             def #{name}(*args)
-              @browser.send(:#{name}, *args) {yield}
+              browser.send(:#{name}, *args) {yield}
             end
           ]
           self.send(name, *args) {yield}
@@ -19,7 +23,7 @@ module Watir
       # make sure that using method 'p' will be invoked on browser
       # and not Kernel
       # use Kernel.p if you need to dump some variable 
-      def_delegators :@browser, :p
+      def_delegators :browser, :p
     end
   end
 end

@@ -34,7 +34,7 @@ module Watir
       end
 
       def extra_failure_content(exception) # :nodoc:
-        browser = example_group.before_all_ivars[:@browser]
+        browser = example_group.before_all_ivars[:@browser] || $browser
         return super unless browser && browser.exists?
 
         save_screenshot browser

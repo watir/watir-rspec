@@ -1,6 +1,6 @@
 # Watir::RSpec
 
-Use Watir with RSpec with ease.
+Use [Watir](http://watir.com) with [RSpec](http://rspec.info) with ease.
 
 ## Installation
 
@@ -57,17 +57,54 @@ When using Rails and writing specs to requests directory, add an additional filt
 
 ## Usage
 
-Just use the browser in your examples. If you haven't included
-Watir::RSpec::Helper, then you need to use the @browser instance variable when
-calling Watir::Browser methods, otherwise you may omit it.
+### Executing browser methods
+
+If you did include ````Watir::Rspec::Helper```` then it is possible to write code like this in your specs:
+
+    text_field(:id => "something").set "foo"
+
+If you did not include ````Watir::RSpec::Helper```` then you have to use browser variable:
+
+    @browser.text_field(:id => "something").set "foo"
+
+### Testing asynchronous code
+
+````Watir::RSpec```` adds convenience methods ````#within```` and ````#during```` to all of the RSpec matchers,
+which help to write better and more beautiful test code.
+
+Let us pretend that the following div will appear dynamically after some Ajax request.
+
+We can use the standard way:
+
+    Watir::Wait.until(5) { div(:id => "something").present? }
+
+Or we can use ````#within```` method:
+
+    div(:id => "something").should be_present.within(5)
+
+````#during```` is the opposite of ````#within```` - it means that during the specified time something should be true/false.
+
+PS! There is one caveat when using ````#within```` or ````#during```` - it cannot be used in every possible situation.
+
+For example, this won't work as expected:
+
+    div(:id => "something").text.should eq("foo").within(5)
+
+The reason is that RSpec will check if value of ````#text```` will change to ````"foo"````, but it is just some ````String````,
+which won't change ever. The rule of thumb is that ````#should```` should be always called on an instance of
+the ````Element```` and ````#within/#duration```` on the matcher for that ````Element```` (e.g. ````be_present````, ````be_visible````, ````exist```` etc.).
+
+### Files created during specs
 
 When creating/downloading/uploading files in your examples and using
-Watir::RSpec::HtmlFormatter then you can generate links automatically to these files when example
-fails. To do that you need to use Watir::RSpec.file\_path method for generating
+````Watir::RSpec::HtmlFormatter```` then you can generate links automatically to these files when example
+fails. To do that you need to use ````Watir::RSpec.file_path```` method for generating
 unique file name:
 
     uploaded_file_path = Watir::RSpec.file_path("uploaded.txt")
     File.open(uploaded_file_path, "w") {|file| file.write "Generated File Input"}
+
+### Rails support
 
 If you're using Rails, then you also need to install [watir-rails](https://github.com/watir/watir-rails) gem.
 
@@ -78,3 +115,7 @@ If you're using Rails, then you also need to install [watir-rails](https://githu
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## License
+
+Copyright (c) Jarmo Pertman (jarmo.p@gmail.com). See LICENSE for details.

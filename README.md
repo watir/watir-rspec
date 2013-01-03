@@ -5,55 +5,60 @@ Use [Watir](http://watir.com) with [RSpec](http://rspec.info) with ease.
 ## Installation
 
 Add these lines to your application's Gemfile:
-
-    group :test do
-      gem 'watir-rspec'
-    end
+````ruby
+group :test do
+  gem 'watir-rspec'
+end
+````
 
 And add these lines to your spec\_helper.rb file:
 
-    RSpec.configure do |config|
-      # Add Watir::RSpec::HtmlFormatter to get links to the screenshots, html and
-      # all other files created during the failing examples.
-      config.add_formatter('documentation')
-      config.add_formatter(Watir::RSpec::HtmlFormatter)
+````ruby
+RSpec.configure do |config|
+  # Add Watir::RSpec::HtmlFormatter to get links to the screenshots, html and
+  # all other files created during the failing examples.
+  config.add_formatter('documentation')
+  config.add_formatter(Watir::RSpec::HtmlFormatter)
 
-      # Open up the browser for each example.
-      config.before :all do
-        @browser = Watir::Browser.new
-      end
+  # Open up the browser for each example.
+  config.before :all do
+    @browser = Watir::Browser.new
+  end
 
-      # Close that browser after each example.
-      config.after :all do
-        @browser.close if @browser
-      end
+  # Close that browser after each example.
+  config.after :all do
+    @browser.close if @browser
+  end
 
-      # Include RSpec::Helper into each of your example group for making it possible to
-      # write in your examples instead of:
-      #   @browser.goto "localhost"
-      #   @browser.text_field(:name => "first_name").set "Bob"
-      #
-      # like this:
-      #   goto "localhost"
-      #   text_field(:name => "first_name").set "Bob"
-      #
-      # This needs that you've used @browser as an instance variable name in
-      # before :all block.
-      config.include Watir::RSpec::Helper
-    end
+  # Include RSpec::Helper into each of your example group for making it possible to
+  # write in your examples instead of:
+  #   @browser.goto "localhost"
+  #   @browser.text_field(:name => "first_name").set "Bob"
+  #
+  # like this:
+  #   goto "localhost"
+  #   text_field(:name => "first_name").set "Bob"
+  #
+  # This needs that you've used @browser as an instance variable name in
+  # before :all block.
+    config.include Watir::RSpec::Helper
+  end
+````
 
 
 When using Rails and writing specs to requests directory, add an additional filter for RSpec:
 
-    config.before :all, :type => :request do
-      @browser = Watir::Browser.new :chrome
-    end
+````ruby
+config.before :all, :type => :request do
+  @browser = Watir::Browser.new :chrome
+end
 
-    config.after :all, :type => :request do
-      @browser.close if @browser
-    end
+config.after :all, :type => :request do
+  @browser.close if @browser
+end
 
-    config.include Watir::RSpec::Helper, :type => :request
+config.include Watir::RSpec::Helper, :type => :request
+````
 
 ## Usage
 
@@ -61,13 +66,17 @@ When using Rails and writing specs to requests directory, add an additional filt
 
 If you did include ````Watir::Rspec::Helper```` then it is possible to write code like this in your specs:
 
-    text_field(:id => "something").set "foo"
+````ruby
+text_field(:id => "something").set "foo"
+````
 
 If you did not include ````Watir::RSpec::Helper```` then you have to use browser variable:
 
-    @browser.text_field(:id => "something").set "foo"
+````ruby
+@browser.text_field(:id => "something").set "foo"
+````
 
-### Testing asynchronous code
+### Testing asynchronous functionality
 
 ````Watir::RSpec```` adds convenience methods ````#within```` and ````#during```` to all of the RSpec matchers,
 which help to write better and more beautiful test code.
@@ -76,11 +85,15 @@ Let us pretend that the following div will appear dynamically after some Ajax re
 
 We can use the standard way:
 
-    Watir::Wait.until(5) { div(:id => "something").present? }
+````ruby
+Watir::Wait.until(5) { div(:id => "something").present? }
+````
 
 Or we can use ````#within```` method:
 
-    div(:id => "something").should be_present.within(5)
+````ruby
+div(:id => "something").should be_present.within(5)
+````
 
 ````#during```` is the opposite of ````#within```` - it means that during the specified time something should be true/false.
 
@@ -88,7 +101,9 @@ PS! There is one caveat when using ````#within```` or ````#during```` - it canno
 
 For example, this won't work as expected:
 
-    div(:id => "something").text.should eq("foo").within(5)
+````ruby
+div(:id => "something").text.should eq("foo").within(5)
+````
 
 The reason is that RSpec will check if value of ````#text```` will change to ````"foo"````, but it is just some ````String````,
 which won't change ever. The rule of thumb is that ````#should```` should be always called on an instance of
@@ -101,8 +116,10 @@ When creating/downloading/uploading files in your examples and using
 fails. To do that you need to use ````Watir::RSpec.file_path```` method for generating
 unique file name:
 
-    uploaded_file_path = Watir::RSpec.file_path("uploaded.txt")
-    File.open(uploaded_file_path, "w") {|file| file.write "Generated File Input"}
+````ruby
+uploaded_file_path = Watir::RSpec.file_path("uploaded.txt")
+File.open(uploaded_file_path, "w") {|file| file.write "Generated File Input"}
+````
 
 ### Rails support
 

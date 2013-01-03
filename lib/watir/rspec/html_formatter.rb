@@ -55,7 +55,7 @@ module Watir
       # will be created during that spec and spec fails then it will be
       # shown automatically in the html report.
       #
-      # @param [String] File name to be used for file.
+      # @param [String] file_name File name to be used for file.
       #   Will be used as a part of the complete name.
       # @return [String] Absolute path for the unique file name.
       def file_path(file_name, description=nil)

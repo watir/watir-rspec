@@ -9,7 +9,8 @@ module Watir
     # * saves html of the browser upon test failure
     # * saves all files generated/downloaded during the test and shows them in the report
     class HtmlFormatter < ::RSpec::Core::Formatters::HtmlFormatter
-      def initialize(output) # :nodoc:
+      # @private
+      def initialize(output)
         @output_path = File.expand_path(ENV["WATIR_RESULTS_PATH"] || (output.respond_to?(:path) ? output.path : "tmp/spec-results/index.html"))
         FileUtils.rm_rf File.dirname(@output_path), :verbose => true if File.exists?(@output_path)
 
@@ -23,17 +24,20 @@ module Watir
         super(File.open(@output_path, "w"))
       end
 
-      def example_group_started(example_group) # :nodoc:
+      # @private
+      def example_group_started(example_group)
         @files_saved_during_example.clear
         super
       end
 
-      def example_started(example) # :nodoc:
+      # @private
+      def example_started(example)
         @files_saved_during_example.clear
         super
       end
 
-      def extra_failure_content(exception) # :nodoc:
+      # @private
+      def extra_failure_content(exception)
         browser = example_group.before_all_ivars[:@browser] || $browser
         return super unless browser && browser.exists?
 
@@ -47,10 +51,13 @@ module Watir
         super + content.join($/)
       end
 
-      # Generates unique file name and path for each example.
+      # Generate unique file path for the current spec. If the file
+      # will be created during that spec and spec fails then it will be
+      # shown automatically in the html report.
       #
-      # All file names generated with this method will be shown
-      # on the report.
+      # @param [String] File name to be used for file.
+      #   Will be used as a part of the complete name.
+      # @return [String] Absolute path for the unique file name.
       def file_path(file_name, description=nil)
         extension = File.extname(file_name)
         basename = File.basename(file_name, extension)
@@ -61,7 +68,7 @@ module Watir
 
       private
 
-      def link_for(file) # :nodoc:
+      def link_for(file)
         return unless File.exists?(file[:path])
 
         description = file[:desc] ? file[:desc] : File.extname(file[:path]).upcase[1..-1]
@@ -69,7 +76,7 @@ module Watir
         "<a href='#{path.relative_path_from(Pathname.new(@output_path).dirname)}'>#{description}</a>&nbsp;"
       end
 
-      def save_html(browser) # :nodoc:
+      def save_html(browser)
         file_name = file_path("browser.html")
         begin
           html = browser.html
@@ -80,7 +87,7 @@ module Watir
         file_name
       end
 
-      def save_screenshot(browser, description="Screenshot") # :nodoc:
+      def save_screenshot(browser, description="Screenshot")
         file_name = file_path("screenshot.png", description)
         browser.screenshot.save(file_name)
         file_name

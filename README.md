@@ -5,6 +5,7 @@ Use [Watir](http://watir.com) with [RSpec](http://rspec.info) with ease.
 ## Installation
 
 Add these lines to your application's Gemfile:
+
 ````ruby
 group :test do
   gem 'watir-rspec'

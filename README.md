@@ -42,8 +42,8 @@ RSpec.configure do |config|
   #
   # This needs that you've used @browser as an instance variable name in
   # before :all block.
-    config.include Watir::RSpec::Helper
-  end
+  config.include Watir::RSpec::Helper
+end
 ````
 
 

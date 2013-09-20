@@ -1,10 +1,19 @@
 require 'rspec'
+
+module Watir
+  class RSpec
+    class << self
+      # @private
+      def active_record_loaded?
+        defined? ActiveRecord::Base
+      end
+    end
+  end
+end
+
+require File.expand_path("rspec/active_record_shared_connection", File.dirname(__FILE__))
 require File.expand_path("rspec/helper", File.dirname(__FILE__))
 require File.expand_path("rspec/html_formatter", File.dirname(__FILE__))
-
-if defined? ActiveRecord
-  require File.expand_path("rspec/active_record_shared_connection", File.dirname(__FILE__))
-end
 
 module Watir
   class RSpec
@@ -138,31 +147,10 @@ module Watir
   end
 end
 
-# patch for #within(timeout) method
-# @private
-module ::RSpec::Matchers
-  class BuiltIn::Change
-    def matches?(event_proc)
-      raise_block_syntax_error if block_given?
+#matchers = RSpec::Matchers::BuiltIn.constants.map(&:to_sym)
+#matchers.delete :BaseMatcher
+#matchers.each do |const|
+  #Watir::RSpec.add_within_and_during_to_matcher RSpec::Matchers::BuiltIn.const_get const
+#end
 
-      # to make #change work with #in(timeout) method
-      unless defined? @actual_before
-        @actual_before = evaluate_value_proc
-        event_proc.call
-      end
-      @actual_after = evaluate_value_proc
-
-      (!change_expected? || changed?) && matches_before? && matches_after? && matches_expected_delta? && matches_min? && matches_max?
-    end
-  end
-
-  alias_method :make, :change
-end
-
-matchers = RSpec::Matchers::BuiltIn.constants.map(&:to_sym)
-matchers.delete :BaseMatcher
-matchers.each do |const|
-  Watir::RSpec.add_within_and_during_to_matcher RSpec::Matchers::BuiltIn.const_get const
-end
-
-Watir::RSpec.add_within_and_during_to_matcher RSpec::Matchers::DSL::Matcher
+#Watir::RSpec.add_within_and_during_to_matcher RSpec::Matchers::DSL::Matcher

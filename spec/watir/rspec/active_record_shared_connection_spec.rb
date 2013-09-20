@@ -1,5 +1,4 @@
 require "spec_helper"
-require "watir/rspec/active_record_shared_connection"
 
 describe ::ActiveRecord::Base do
   before { described_class.instance_variable_set :@shared_connection, nil }

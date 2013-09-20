@@ -3,7 +3,9 @@ RSpec.configure do |c|
 end
 
 # Make sure constants are defined
-module ActiveRecord
+module ::ActiveRecord
   class Base
   end
 end
+
+require "watir/rspec"

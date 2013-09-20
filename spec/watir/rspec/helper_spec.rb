@@ -1,5 +1,4 @@
 require "spec_helper"
-require "watir/rspec/helper"
 
 describe Watir::RSpec::Helper do
   before { self.send :extend, described_class }

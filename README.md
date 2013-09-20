@@ -1,4 +1,6 @@
 # Watir::RSpec
+[![Gem Version](https://badge.fury.io/rb/test-page.png)](http://badge.fury.io/rb/watir-rspec)
+[![Build Status](https://secure.travis-ci.org/watir/watir-rspec.png)](http://travis-ci.org/watir/watir-rspec)
 
 Use [Watir](http://watir.com) with [RSpec](http://rspec.info) with ease.
 

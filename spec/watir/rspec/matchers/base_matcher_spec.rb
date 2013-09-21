@@ -62,6 +62,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       end
 
       object.should be_foo.within(1)
+      raised.should be_true
     end
 
     it "#does_not_match?" do
@@ -96,6 +97,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       end
 
       object.should_not be_foo.within(1)
+      raised.should be_true
     end
   end
 
@@ -133,6 +135,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       end
 
       object.should be_foo.during(0.1)
+      raised.should be_true
     end
 
     it "#does_not_match?" do
@@ -166,6 +169,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       end
 
       object.should_not be_foo.during(0.1)
+      raised.should be_true
     end    
   end
 

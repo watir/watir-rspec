@@ -9,7 +9,7 @@ Use [Watir](http://watir.com) with [RSpec](http://rspec.info) with ease.
 * No need to open the browser in your each test manually.
 * Easily test for asynchronous events by using `#within` matchers.
 * Easily test that something stays the same within some period by using `#during` matchers.
-* Get nice html reports with links to automatic screenshots and other files generated during test.
+* Get nice html reports with links to html, screenshots and other files generated during test.
 
 ## Installation
 

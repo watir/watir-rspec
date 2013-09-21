@@ -12,9 +12,9 @@ module Watir
           @target = target
 
           if @within_seconds
-            !Timeout.timeout(@within_seconds) { sleep 0.1 until (target.send(@predicate) rescue false) } rescue false
+            match_with_timeout(@within_seconds, true) { target.send @predicate }
           elsif @during_seconds
-            Timeout.timeout(@during_seconds) { sleep 0.1 while (target.send(@predicate) rescue true) } rescue true
+            match_with_timeout(@during_seconds, false) { !target.send @predicate }
           else
             target.send(@predicate)
           end
@@ -24,9 +24,9 @@ module Watir
           @target = target
 
           if @within_seconds
-            !Timeout.timeout(@within_seconds) { sleep 0.1 while (target.send(@predicate) rescue true) } rescue false
+            match_with_timeout(@within_seconds, true) { !target.send @predicate }
           elsif @during_seconds
-            Timeout.timeout(@during_seconds) { sleep 0.1 until (target.send(@predicate) rescue false) } rescue true
+            match_with_timeout(@during_seconds, false) { target.send @predicate }
           else
             !target.send(@predicate)
           end
@@ -51,6 +51,10 @@ module Watir
         end
 
         private
+
+        def match_with_timeout(seconds, expected_result)
+          Timeout.timeout(seconds) { sleep 0.1 until (yield rescue false); expected_result } rescue !expected_result
+        end
 
         def timeout_to_s
           if @within_seconds 

@@ -11,21 +11,25 @@ module Watir
         def matches?(target)
           @target = target
 
-          @seconds ?
-            !Timeout.timeout(@seconds) { sleep 0.1 until target.send(@predicate) } :
+          if @within_seconds
+            !Timeout.timeout(@within_seconds) { sleep 0.1 until (target.send(@predicate) rescue false) } rescue false
+          elsif @during_seconds
+            Timeout.timeout(@during_seconds) { sleep 0.1 while (target.send(@predicate) rescue true) } rescue true
+          else
             target.send(@predicate)
-        rescue TimeoutError
-          false
+          end
         end
 
         def does_not_match?(target)
           @target = target
 
-          @seconds ?
-            !Timeout.timeout(@seconds) { sleep 0.1 while target.send(@predicate) } :
+          if @within_seconds
+            !Timeout.timeout(@within_seconds) { sleep 0.1 while (target.send(@predicate) rescue true) } rescue false
+          elsif @during_seconds
+            Timeout.timeout(@during_seconds) { sleep 0.1 until (target.send(@predicate) rescue false) } rescue true
+          else
             !target.send(@predicate)
-        rescue TimeoutError
-          false
+          end
         end
 
         def failure_message_for_should
@@ -37,14 +41,25 @@ module Watir
         end
 
         def within(seconds)
-          @seconds = seconds
+          @within_seconds = seconds
+          self
+        end
+
+        def during(seconds)
+          @during_seconds = seconds
           self
         end
 
         private
 
         def timeout_to_s
-          @seconds ? " within #{@seconds} second(s) " : " "
+          if @within_seconds 
+            " within #{@within_seconds} second(s) "
+          elsif @during_seconds
+            " during #{@during_seconds} second(s) "
+          else
+            " "
+          end
         end
       end
     end

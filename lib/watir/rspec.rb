@@ -1,102 +1,6 @@
 module Watir
   class RSpec
     class << self
-      # @private
-      def active_record_loaded?
-        defined? ActiveRecord::Base
-      end
-
-      # Add #within(timeout) and #during(timeout) methods for every matcher for allowing to wait until some condition is met.
-      #     div.click
-      #     another_div.should be_present.within(5)
-      #
-      #     expect {
-      #       div.click
-      #     }.to change {another_div.text}.from("before").to("after").within(5)
-      #
-      #     expect {
-      #       div.click
-      #     }.to make {another_div.present?}.within(5)
-      #
-      #     expect {
-      #       div.click
-      #     }.to change {another_div.text}.soon
-      #
-      # @private
-      def add_within_and_during_to_matcher const
-        const.class_eval do
-
-          inst_methods = instance_methods.map &:to_sym
-
-          if !(inst_methods.include?(:__matches?) || inst_methods.include?(:__does_not_match?)) && 
-            (inst_methods.include?(:matches?) || inst_methods.include?(:does_not_match?))
-
-            def within(timeout)
-              @within_timeout = timeout
-              self
-            end
-
-            def during(timeout)
-              @during_timeout = timeout
-              self
-            end
-
-            def soon 
-              within(30)
-            end      
-
-            def seconds
-              # for syntactic sugar
-              self
-            end
-
-            alias_method :second, :seconds
-
-            def minutes
-              @within_timeout *= 60 if @within_timeout
-              @during_timeout *= 60 if @during_timeout
-              self
-            end
-
-            alias_method :minute, :minutes
-          end
-
-          if inst_methods.include? :matches?
-            alias_method :__matches?, :matches? 
-
-            def matches?(actual)
-              match_with_wait {__matches?(actual)}
-            end
-          end
-
-          if inst_methods.include? :does_not_match?
-            alias_method :__does_not_match?, :does_not_match?
-
-            def does_not_match?(actual)
-              match_with_wait {__does_not_match?(actual)}
-            end
-          elsif inst_methods.include? :matches?
-            def does_not_match?(actual)
-              match_with_wait {!__matches?(actual)}
-            end
-          end
-
-          private
-
-          def match_with_wait
-            if @within_timeout
-              timeout = @within_timeout; @within_timeout = nil
-              Watir::Wait.until(timeout) {yield} rescue false
-            elsif @during_timeout
-              timeout = @during_timeout; @during_timeout = nil
-              Watir::Wait.while(timeout) {yield} rescue true        
-            else
-              yield
-            end
-          end
-        end
-      end
-
       # Generate unique file path for the current spec. If the file
       # will be created during that spec and spec fails then it will be
       # shown automatically in the html report.
@@ -107,6 +11,11 @@ module Watir
       # @raise [RuntimeError] when {Watir::RSpec::HtmlFormatter} is not in use.
       def file_path(file_name, description=nil)
         formatter.file_path(file_name, description=nil)
+      end
+
+      # @private
+      def active_record_loaded?
+        defined? ActiveRecord::Base
       end
 
       private
@@ -128,20 +37,9 @@ module Watir
                          formatter
                        end
       end
-
-
     end
-
   end
 end
-
-#matchers = RSpec::Matchers::BuiltIn.constants.map(&:to_sym)
-#matchers.delete :BaseMatcher
-#matchers.each do |const|
-  #Watir::RSpec.add_within_and_during_to_matcher RSpec::Matchers::BuiltIn.const_get const
-#end
-
-#Watir::RSpec.add_within_and_during_to_matcher RSpec::Matchers::DSL::Matcher
 
 require "rspec"
 

@@ -99,10 +99,12 @@ Make sure you run the watir-rspec command within your projects' directory.]
         end
 
         def using_rails?
-          @options[:rails] || @using_rails ||= begin
-                                                 File.exists?("Gemfile.lock") && File.read("Gemfile.lock") =~ /rspec-rails/ ||
-                                                   File.exists?("Gemfile") && File.read("Gemfile") =~ /rspec-rails/
-                                               end
+          return @options[:rails] if @options.has_key? :rails
+
+          @using_rails ||= begin
+                             File.exists?("Gemfile.lock") && File.read("Gemfile.lock") =~ /rspec-rails/ ||
+                               File.exists?("Gemfile") && File.read("Gemfile") =~ /rspec-rails/
+                           end
         end
       end
     end

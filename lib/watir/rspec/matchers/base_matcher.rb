@@ -33,11 +33,11 @@ module Watir
         end
 
         def failure_message_for_should
-          "expected #{@target.inspect} to be #{@predicate.to_s[0..-2]}#{timeout_to_s}"
+          "expected #{@target.inspect} to #{be_prefix}#{@predicate.to_s[0..-2]}#{timeout_to_s}"
         end
 
         def failure_message_for_should_not
-          "expected #{@target.inspect} not to be #{@predicate.to_s[0..-2]}#{timeout_to_s}"
+          "expected #{@target.inspect} not to #{be_prefix}#{@predicate.to_s[0..-2]}#{timeout_to_s}"
         end
 
         def within(seconds)
@@ -54,6 +54,10 @@ module Watir
 
         def match_with_timeout(seconds, expected_result)
           Timeout.timeout(seconds) { sleep 0.1 until (yield rescue false); expected_result } rescue !expected_result
+        end
+
+        def be_prefix
+          @predicate.to_s[0..-2] == "exist" ? "" : "be "
         end
 
         def timeout_to_s

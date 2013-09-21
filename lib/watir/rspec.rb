@@ -1,5 +1,3 @@
-require 'rspec'
-
 module Watir
   class RSpec
     class << self
@@ -7,17 +5,7 @@ module Watir
       def active_record_loaded?
         defined? ActiveRecord::Base
       end
-    end
-  end
-end
 
-require File.expand_path("rspec/active_record_shared_connection", File.dirname(__FILE__))
-require File.expand_path("rspec/helper", File.dirname(__FILE__))
-require File.expand_path("rspec/html_formatter", File.dirname(__FILE__))
-
-module Watir
-  class RSpec
-    class << self
       # Add #within(timeout) and #during(timeout) methods for every matcher for allowing to wait until some condition is met.
       #     div.click
       #     another_div.should be_present.within(5)
@@ -154,3 +142,12 @@ end
 #end
 
 #Watir::RSpec.add_within_and_during_to_matcher RSpec::Matchers::DSL::Matcher
+
+require "rspec"
+
+require File.expand_path("rspec/active_record_shared_connection", File.dirname(__FILE__))
+require File.expand_path("rspec/helper", File.dirname(__FILE__))
+require File.expand_path("rspec/matchers/base_matcher", File.dirname(__FILE__))
+require File.expand_path("rspec/matchers", File.dirname(__FILE__))
+require File.expand_path("rspec/html_formatter", File.dirname(__FILE__))
+

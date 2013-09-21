@@ -2,4 +2,3 @@
 
 require "watir/rspec/cli"
 Watir::RSpec::CLI.execute
-

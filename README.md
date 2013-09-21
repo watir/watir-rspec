@@ -17,7 +17,7 @@ Add these lines to your application's Gemfile:
 
 ````ruby
 group :test do
-  gem 'watir-rspec'
+  gem "watir-rspec"
 end
 ````
 

@@ -7,7 +7,8 @@ module Watir
         def execute
           @options = {}
           parser = OptionParser.new do |opts|
-            opts.banner "Install watir-rspec configuration into spec_helper file.
+            opts.banner = "Install watir-rspec configuration into spec_helper file.
+
 Usage: watir-rspec [options] install"
 
             opts.on("-r", "--[no-]rails", "Force to install watir-rspec for Rails application if the detection fails") do |v|
@@ -30,11 +31,10 @@ Usage: watir-rspec [options] install"
         def install
           spec_helper = File.join(spec_directory, "spec_helper.rb")
           puts "Rails application #{using_rails? ? "detected" : "not detected"}.
-Installing watir-rspec configuration into #{spec_helper)}."
+Installing watir-rspec configuration into #{spec_helper}."
 
           File.open(spec_helper, "a") do |file|
             file.puts %Q[
-
 # Configuration for watir-rspec
 require "watir/rspec"
 
@@ -77,12 +77,12 @@ RSpec.configure do |config|
   #   @browser.text_field(:name => "first_name").should exist.during(2)
   config.include Watir::RSpec::Matchers#{rails_filter}
 end
-            ]
+  ]
           end
         end
 
         def spec_directory
-          specs = File.expand_path("spec", File.dirname(__FILE__))
+          specs = File.expand_path("spec")
 
           unless File.directory? specs
             puts %Q[#{specs} directory not found.

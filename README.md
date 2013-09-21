@@ -31,6 +31,8 @@ And execute the following command to add `watir-rspec` configuration into your `
 
 ## Usage
 
+Check out the [documentation](http://rubydoc.info/gems/watir-rspec/frames) and the straight-forward fully working examples below.
+
 ````ruby
 require "spec_helper"
 

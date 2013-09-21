@@ -2,6 +2,7 @@ require "optparse"
 
 module Watir
   class RSpec
+    # @private
     class CLI
       class << self
         def execute

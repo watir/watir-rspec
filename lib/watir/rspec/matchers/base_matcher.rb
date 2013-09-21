@@ -3,6 +3,7 @@ require "timeout"
 module Watir
   class RSpec
     module Matchers
+      # @private
       class BaseMatcher < ::RSpec::Matchers::BuiltIn::Be
         def initialize(predicate)
           @predicate = predicate

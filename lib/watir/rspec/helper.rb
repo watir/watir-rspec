@@ -3,7 +3,7 @@ module Watir
     module Helper
       extend Forwardable
 
-      # @return [Watir::Browser] a latest browser instance if it is initialized with 
+      # @return [Watir::Browser] a current browser instance if it is initialized with 
       #   @browser or $browser variable name.
       def browser
         @browser || $browser

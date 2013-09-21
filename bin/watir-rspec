@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
-require "watir/rspec/cli"
+require File.expand_path("../lib/watir/rspec/cli", File.dirname(__FILE__))
 Watir::RSpec::CLI.execute

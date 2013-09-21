@@ -23,13 +23,17 @@ Usage: watir-rspec [options] install"
             exit
           end
 
-          install
+          unless already_installed?
+            install 
+          else
+            puts "watir-rspec is already installed into #{spec_helper}... skipping."
+            exit
+          end
         end
 
         private
 
         def install
-          spec_helper = File.join(spec_directory, "spec_helper.rb")
           puts "Rails application #{using_rails? ? "detected" : "not detected"}.
 Installing watir-rspec configuration into #{spec_helper}."
 
@@ -81,6 +85,10 @@ end
           end
         end
 
+        def already_installed?
+          File.exist?(spec_helper) && File.read(spec_helper) =~ /Watir::RSpec/
+        end
+
         def spec_directory
           specs = File.expand_path("spec")
 
@@ -92,6 +100,10 @@ Make sure you run the watir-rspec command within your projects' directory.]
           end
 
           specs
+        end
+
+        def spec_helper
+          File.join(spec_directory, "spec_helper.rb")
         end
 
         def rails_filter

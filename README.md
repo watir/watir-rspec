@@ -40,7 +40,7 @@ describe "Google" do
   before { goto "http://google.com" }
   
   it "has search box" do
-   text_field(:name => "q").should be_present
+    text_field(:name => "q").should be_present
   end
   
   it "allows to search" do

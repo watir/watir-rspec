@@ -15,6 +15,10 @@ Usage: watir-rspec [options] install"
             opts.on("-r", "--[no-]rails", "Force to install watir-rspec for Rails application if the detection fails") do |v|
               @options[:rails] = v
             end
+
+            opts.on("-f", "--force", "Force to install watir-rspec even if it seems to be installed already") do |v|
+              @options[:force] = v
+            end
           end
 
           parser.parse!
@@ -24,7 +28,7 @@ Usage: watir-rspec [options] install"
             exit
           end
 
-          unless already_installed?
+          if @options[:force] || !already_installed?
             install 
           else
             puts "watir-rspec is already installed into #{spec_helper}... skipping."

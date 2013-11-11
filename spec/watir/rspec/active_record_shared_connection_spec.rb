@@ -1,9 +1,12 @@
 require "spec_helper"
 
-describe ::ActiveRecord::Base do
-  before { described_class.instance_variable_set :@shared_connection, nil }
+class TestModel < ::ActiveRecord::Base
+end
 
+describe TestModel do
   context ".connection" do
+    before { described_class.class_variable_set :@@shared_connection, nil }
+
     it "reuses the connection" do
       described_class.should_receive(:retrieve_connection).once.and_return(:established_connection)
 

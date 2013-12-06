@@ -1,3 +1,7 @@
+### 1.1.2 - 2013/12/06
+
+* Load Watir as a dependency automatically.
+
 ### 1.1.1 - 2013/11/24
 
 * Fix ActiveRecord integration. Closes #8 by Stéphane Blond.

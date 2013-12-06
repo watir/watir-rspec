@@ -42,6 +42,7 @@ module Watir
 end
 
 require "rspec"
+require "watir"
 
 require File.expand_path("rspec/active_record_shared_connection", File.dirname(__FILE__))
 require File.expand_path("rspec/helper", File.dirname(__FILE__))

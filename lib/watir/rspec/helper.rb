@@ -1,3 +1,5 @@
+require "forwardable"
+
 module Watir
   class RSpec
     module Helper

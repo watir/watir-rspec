@@ -88,6 +88,8 @@ RSpec.configure do |config|
 end
   ]
           end
+
+          puts "WARNING : the HTML formatter cannot be used until the rspec legacy formatter gem is also installed !! (https://github.com/rspec/rspec-legacy_formatters)"
         end
 
         def already_installed?

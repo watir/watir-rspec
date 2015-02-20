@@ -1,5 +1,5 @@
 module Watir
   class RSpec
-    VERSION = "1.1.4"
+    VERSION = "1.1.2"
   end
 end

@@ -62,7 +62,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       end
 
       expect(object).to be_foo.within(1)
-      expect(raised).to be_truthy
+      expect(raised).to be true
     end
 
     it "#does_not_match?" do
@@ -97,7 +97,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       end
 
       expect(object).not_to be_foo.within(1)
-      expect(raised).to be_truthy
+      expect(raised).to be true
     end
   end
 
@@ -135,7 +135,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       end
 
       expect(object).to be_foo.during(0.1)
-      expect(raised).to be_truthy
+      expect(raised).to be true
     end
 
     it "#does_not_match?" do
@@ -169,7 +169,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       end
 
       expect(object).not_to be_foo.during(0.1)
-      expect(raised).to be_truthy
+      expect(raised).to be true
     end    
   end
 

@@ -21,10 +21,19 @@ module Watir
         if browser.respond_to?(name)
           Helper.module_eval %Q[
             def #{name}(*args)
-              browser.send(:#{name}, *args) {yield}
+              if block_given?
+                browser.send(:#{name}, *args) {yield}
+              else
+                browser.send(:#{name}, *args)
+              end
             end
           ]
-          self.send(name, *args) {yield}
+
+          if block_given?
+            self.send(name, *args) {yield}
+          else
+            self.send(name, *args)
+          end
         else
           super
         end

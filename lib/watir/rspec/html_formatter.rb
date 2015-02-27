@@ -38,6 +38,7 @@ module Watir
 
       # @private
       def extra_failure_content(exception)
+        return super unless example_group  # apparently there are cases where rspec failures are encountered and the example_group is not set (i.e. nil)
         browser = example_group.before_context_ivars[:@browser] || $browser
         return super unless browser && browser.exists?
 

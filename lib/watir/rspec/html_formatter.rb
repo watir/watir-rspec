@@ -1,3 +1,4 @@
+require 'rspec/core/formatters'
 require 'rspec/core/formatters/html_formatter'
 require 'pathname'
 require 'fileutils'
@@ -9,6 +10,9 @@ module Watir
     # * saves html of the browser upon test failure
     # * saves all files generated/downloaded during the test and shows them in the report
     class HtmlFormatter < ::RSpec::Core::Formatters::HtmlFormatter
+
+      ::RSpec::Core::Formatters.register self, *(::RSpec::Core::Formatters::Loader.formatters[::RSpec::Core::Formatters::HtmlFormatter])
+
       # @private
       def initialize(output)
         @output_path = File.expand_path(ENV["WATIR_RESULTS_PATH"] || (output.respond_to?(:path) ? output.path : "tmp/spec-results/index.html"))
@@ -36,22 +40,6 @@ module Watir
         super
       end
 
-      # @private
-      def extra_failure_content(exception)
-        return super unless example_group  # apparently there are cases where rspec failures are encountered and the example_group is not set (i.e. nil)
-        browser = example_group.before_context_ivars[:@browser] || $browser
-        return super unless browser && browser.exists?
-
-        save_screenshot browser
-        save_html browser
-
-        content = []
-        content << "<span>"
-        @files_saved_during_example.each {|f| content << link_for(f)}
-        content << "</span>"
-        super + content.join($/)
-      end
-
       # Generate unique file path for the current spec. If the file
       # will be created during that spec and spec fails then it will be
       # shown automatically in the html report.
@@ -68,6 +56,22 @@ module Watir
       end
 
       private
+
+      # @private
+      def extra_failure_content(exception)
+        return super unless example_group  # apparently there are cases where rspec failures are encountered and the example_group is not set (i.e. nil)
+        browser = example_group.before_context_ivars[:@browser] || $browser
+        return super unless browser && browser.exists?
+
+        save_screenshot browser
+        save_html browser
+
+        content = []
+        content << "<span>"
+        @files_saved_during_example.each {|f| content << link_for(f)}
+        content << "</span>"
+        super + content.join($/)
+      end
 
       def link_for(file)
         return unless File.exists?(file[:path])

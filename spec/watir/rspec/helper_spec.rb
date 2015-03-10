@@ -30,20 +30,20 @@ describe Watir::RSpec::Helper do
 
     it "raises error when browser does not have method" do
       @browser = double("browser")
-      expect(described_class).not_to respond_to :method_to_be_defined
+      expect(described_class).not_to be_method_defined :not_existing_method
 
       expect do
-        self.method_to_be_defined
+        self.not_existing_method
       end.to raise_error(NoMethodError)
-      expect(described_class).not_to respond_to :method_to_be_defined
+      expect(described_class).not_to be_method_defined  :not_existing_method
     end
 
     it "adds browser methods to the helper" do
-      @browser = double("browser", method_to_be_defined2: :done)
+      @browser = double("browser", method_to_be_defined: :done)
 
-      expect(described_class.instance_methods).not_to include :method_to_be_defined2
-      expect(method_to_be_defined2).to eql :done
-      expect(described_class.instance_methods).to include :method_to_be_defined2
+      expect(described_class).not_to be_method_defined :method_to_be_defined
+      expect(method_to_be_defined).to eql :done
+      expect(described_class).to be_method_defined :method_to_be_defined
     end
   end
 

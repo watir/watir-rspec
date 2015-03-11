@@ -10,7 +10,7 @@ module Watir
       # @return [String] Absolute path for the unique file name.
       # @raise [RuntimeError] when {Watir::RSpec::HtmlFormatter} is not in use.
       def file_path(file_name, description=nil)
-        formatter.file_path(file_name, description=nil)
+        formatter.file_path(file_name, description)
       end
 
       # @private

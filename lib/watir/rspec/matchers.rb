@@ -10,17 +10,17 @@ module Watir
     # result should be true for the whole specified time period.
     #
     # @example Wait for 2 seconds until element is present (element exists and is visible)
-    #   text_field.should be_present.within(2)
+    #   expect(text_field).to be_present.within(2)
     #   
     # @example Wait for 2 seconds until element is visible
-    #   text_field.should be_visible.within(2)
+    #   expect(text_field).to be_visible.within(2)
     #
     # @example Wait for 2 seconds until element exists
-    #   text_field.should exist.within(2)
+    #   expect(text_field).to exist.within(2)
     #
     # @example Make sure that container is visible for the whole time during 2 seconds
     #   button.click
-    #   div.should be_visible.during(2)
+    #   expect(text_field).to be_visible.during(2)
     module Matchers
       def be_present
         BaseMatcher.new :present?

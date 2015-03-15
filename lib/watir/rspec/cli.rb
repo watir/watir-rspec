@@ -88,6 +88,7 @@ RSpec.configure do |config|
 end
   ]
           end
+          
         end
 
         def already_installed?

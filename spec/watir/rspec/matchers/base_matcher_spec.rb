@@ -5,25 +5,25 @@ describe Watir::RSpec::Matchers::BaseMatcher do
 
   it "#matches?" do
     object = double("element", foo?: true)
-    object.should be_foo
+    expect(object).to be_foo
   end
 
   it "#matches? with error" do
     object = double("element", foo?: false)
     expect {
-      object.should be_foo
+      expect(object).to be_foo
     }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
   end
 
   it "#does_not_match?" do
     object = double("element", foo?: false)
-    object.should_not be_foo
+    expect(object).not_to be_foo
   end
 
   it "#does_not_match? with error" do
     object = double("element", foo?: true)
     expect {
-      object.should_not be_foo
+      expect(object).not_to be_foo
     }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
   end
 
@@ -33,10 +33,10 @@ describe Watir::RSpec::Matchers::BaseMatcher do
     it "#matches?" do
       object = double("element")
       @result = false
-      object.stub(:foo?) { @result }
+      allow(object).to receive (:foo?) { @result }
       thr = Thread.new { sleep 0.1; @result = true }
 
-      object.should be_foo.within(1)
+      expect(object).to be_foo.within(1)
       thr.join
     end
 
@@ -44,14 +44,14 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       object = double("element", foo?: false)
 
       expect {
-        object.should be_foo.within(0.1)
+        expect(object).to be_foo.within(0.1)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
     end
 
     it "#matches? with some other error" do
       object = double("element")
       raised = false
-      object.stub(:foo?) do
+      allow(object).to receive (:foo?) do
         unless raised
           raised = true
           raise "Some unexpected exception"
@@ -61,17 +61,17 @@ describe Watir::RSpec::Matchers::BaseMatcher do
         end
       end
 
-      object.should be_foo.within(1)
-      raised.should be_true
+      expect(object).to be_foo.within(1)
+      expect(raised).to be true
     end
 
     it "#does_not_match?" do
       object = double("element")
       @result = true
-      object.stub(:foo?) { @result }
+      allow(object).to receive (:foo?) { @result }
       thr = Thread.new { sleep 0.1; @result = false }
 
-      object.should_not be_foo.within(1)
+      expect(object).not_to be_foo.within(1)
       thr.join
     end    
 
@@ -79,14 +79,14 @@ describe Watir::RSpec::Matchers::BaseMatcher do
       object = double("element", foo?: true)
 
       expect {
-        object.should_not be_foo.within(0.1)
+        expect(object).not_to be_foo.within(0.1)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
     end
 
     it "#does_not_match? with some other error" do
       object = double("element")
       raised = false
-      object.stub(:foo?) do
+      allow(object).to receive (:foo?) do
         unless raised
           raised = true
           raise "Some unexpected exception"
@@ -96,8 +96,8 @@ describe Watir::RSpec::Matchers::BaseMatcher do
         end
       end
 
-      object.should_not be_foo.within(1)
-      raised.should be_true
+      expect(object).not_to be_foo.within(1)
+      expect(raised).to be true
     end
   end
 
@@ -107,17 +107,17 @@ describe Watir::RSpec::Matchers::BaseMatcher do
     it "#matches?" do
       object = double("element", foo?: true)
 
-      object.should be_foo.during(0.1)
+      expect(object).to be_foo.during(0.1)
     end
 
     it "#matches? with timeout error" do
       object = double("element")
       @result = true
-      object.stub(:foo?) { @result }
+      allow(object).to receive (:foo?) { @result }
       thr = Thread.new { sleep 0.1; @result = false }
 
       expect {
-        object.should be_foo.during(1)
+        expect(object).to be_foo.during(1)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
       thr.join
     end
@@ -125,7 +125,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
     it "#matches? with some other error" do
       object = double("element")
       raised = false
-      object.stub(:foo?) do
+      allow(object).to receive (:foo?) do
         unless raised
           raised = true
           raise "Some unexpected exception"
@@ -134,24 +134,24 @@ describe Watir::RSpec::Matchers::BaseMatcher do
         end
       end
 
-      object.should be_foo.during(0.1)
-      raised.should be_true
+      expect(object).to be_foo.during(0.1)
+      expect(raised).to be true
     end
 
     it "#does_not_match?" do
       object = double("element", foo?: false)
 
-      object.should_not be_foo.during(0.1)
+      expect(object).not_to be_foo.during(0.1)
     end    
 
     it "#does_not_match? with timeout error" do
       object = double("element")
       @result = false
-      object.stub(:foo?) { @result }
+      allow(object).to receive (:foo?) { @result }
       thr = Thread.new { sleep 0.1; @result = true }
 
       expect {
-        object.should_not be_foo.during(1)
+        expect(object).not_to be_foo.during(1)
       }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
       thr.join
     end
@@ -159,7 +159,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
     it "#does_not_match? with some other error" do
       object = double("element")
       raised = false
-      object.stub(:foo?) do
+      allow(object).to receive (:foo?) do
         unless raised
           raised = true
           raise "Some unexpected exception"
@@ -168,14 +168,14 @@ describe Watir::RSpec::Matchers::BaseMatcher do
         end
       end
 
-      object.should_not be_foo.during(0.1)
-      raised.should be_true
+      expect(object).not_to be_foo.during(0.1)
+      expect(raised).to be true
     end    
   end
 
   def should_take_at_least(seconds)
     t = Time.now
     yield
-    (Time.now - t).should be >= seconds
+    expect(Time.now - t).to be >= seconds
   end
 end

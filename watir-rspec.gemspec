@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Watir::RSpec::VERSION
 
-  gem.add_dependency "rspec", "~>2.0"
+  gem.add_dependency "rspec", "~>3.0"
   gem.add_dependency "watir", "~>5.0"
 
   gem.add_development_dependency "yard"

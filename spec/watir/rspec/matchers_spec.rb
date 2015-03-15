@@ -5,19 +5,19 @@ describe Watir::RSpec::Matchers do
 
   it "#be_present" do
     matcher = be_present
-    matcher.should == Watir::RSpec::Matchers::BaseMatcher
-    matcher.instance_variable_get(:@predicate).should == :present?
+    expect(matcher).to be_a Watir::RSpec::Matchers::BaseMatcher
+    expect(matcher.instance_variable_get(:@predicate)).to eql :present?
   end
 
   it "#be_visible" do
     matcher = be_visible
-    matcher.should == Watir::RSpec::Matchers::BaseMatcher
-    matcher.instance_variable_get(:@predicate).should == :visible?
+    expect(matcher).to be_a Watir::RSpec::Matchers::BaseMatcher
+    expect(matcher.instance_variable_get(:@predicate)).to eql  :visible?
   end
 
   it "#exist" do
     matcher = exist
-    matcher.should == Watir::RSpec::Matchers::BaseMatcher
-    matcher.instance_variable_get(:@predicate).should == :exist?
+    expect(matcher).to be_a Watir::RSpec::Matchers::BaseMatcher
+    expect(matcher.instance_variable_get(:@predicate)).to eql :exist?
   end  
 end

@@ -1,3 +1,7 @@
+### 2.0.0 - 2015/03/18
+
+* Add support for RSpec 3.x. RSpec 2.x is not supported anymore (PR #10).
+
 ### 1.1.3 - 2015/03/11
 
 * Fix `Watir::RSpec.file_path` to not discard description (PR #11).

@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "watir-rspec"
   gem.require_paths = ["lib"]
   gem.version       = Watir::RSpec::VERSION
+  gem.license       = "MIT"
 
   gem.add_dependency "rspec", "~>3.0"
   gem.add_dependency "watir", "~>5.0"

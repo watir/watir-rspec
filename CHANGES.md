@@ -1,3 +1,7 @@
+### 2.0.1 - 2015/03/18
+
+* Add license into gemspec (issue #6).
+
 ### 2.0.0 - 2015/03/18
 
 * Add support for RSpec 3.x. RSpec 2.x is not supported anymore (PR #10).

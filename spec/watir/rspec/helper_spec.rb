@@ -35,7 +35,7 @@ describe Watir::RSpec::Helper do
       expect do
         self.not_existing_method
       end.to raise_error(NoMethodError)
-      expect(described_class).not_to be_method_defined  :not_existing_method
+      expect(described_class).not_to be_method_defined :not_existing_method
     end
 
     it "adds browser methods to the helper" do
@@ -52,5 +52,36 @@ describe Watir::RSpec::Helper do
     expect(described_class).not_to receive(:method_missing)
 
     expect(p).to eql "#p"
+  end
+
+  context "Block parameter for browser method" do
+    before :each do
+      @browser = double("browser")
+    end
+
+    it "block content is propagated to browser method when method is first called" do
+      expect(@browser).to receive(:window).with(:title => "my_window") { |&block| expect(block.call).to be == "my block content" }
+      # expect(described_class).to receive(:method_missing)
+      window(:title => "my_window") { "my block content" }
+    end
+
+    it "block content is propagated to browser method when method was already called" do
+      expect(@browser).to receive(:window).with(:title => "my_window") { |&block| expect(block.call).to be == "my block content" }.twice
+      # expect(described_class).to receive(:method_missing)
+      window(:title => "my_window") { "my block content" }
+      # expect(described_class).not_to receive(:method_missing)
+      window(:title => "my_window") { "my block content" }
+    end
+
+    it "Correct number of block parameters are properly propagated to browser method when method is first called" do
+      expect(@browser).to receive(:window).with(:title => "my_window").and_yield("first block parameter content", "second block parameter content")
+      expect(window(:title => "my_window") { |parameter_1, parameter_2| parameter_1 + " & " + parameter_2 }).to be == "first block parameter content & second block parameter content"
+    end
+
+    it "Correct number of block parameters are properly propagated to browser method when method is first called" do
+      expect(@browser).to receive(:window).with(:title => "my_window").and_yield("first block parameter content", "second block parameter content").twice
+      expect(window(:title => "my_window") { |parameter_1, parameter_2| parameter_1 + " & " + parameter_2 }).to be == "first block parameter content & second block parameter content"
+      expect(window(:title => "my_window") { |parameter_1, parameter_2| parameter_1 + " & " + parameter_2 }).to be == "first block parameter content & second block parameter content"
+    end
   end
 end

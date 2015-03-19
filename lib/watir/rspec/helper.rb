@@ -22,7 +22,7 @@ module Watir
           Helper.module_eval %Q[
             def #{name}(*args)
               if block_given?
-                browser.send(:#{name}, *args) {yield}
+                browser.send(:#{name}, *args, &Proc.new)
               else
                 browser.send(:#{name}, *args)
               end
@@ -30,7 +30,7 @@ module Watir
           ]
 
           if block_given?
-            self.send(name, *args) {yield}
+            self.send(name, *args, &Proc.new)
           else
             self.send(name, *args)
           end
@@ -38,6 +38,7 @@ module Watir
           super
         end
       end
+
 
       # make sure that using method 'p' will be invoked on browser
       # and not Kernel

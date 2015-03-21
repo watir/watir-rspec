@@ -1,3 +1,7 @@
+### 2.0.2 - 2015/03/21
+
+* Fix delegating methods to browser with blocks having parameters. Closes #12.
+
 ### 2.0.1 - 2015/03/18
 
 * Add license into gemspec (issue #6).

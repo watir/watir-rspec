@@ -13,9 +13,9 @@ module Watir
 
       # Will dispatch all missing methods to the {#browser} instance.
       # @example Makes it possible to use Watir::Browser methods without specifying the browser instance in the specs like this:
-      #  it "should do something" do
+      #  it "text field is present" do
       #    # notice that we're calling Watir::Browser#text_field here directly
-      #    text_field(:id => "foo").should be_present
+      #    expect(text_field(id: "foo")).to be_present
       #  end
       def method_missing(name, *args)
         if browser.respond_to?(name)

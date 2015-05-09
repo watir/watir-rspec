@@ -28,7 +28,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
   end
 
   context "#within" do
-    around { |example| should_take_at_least(0.1) { example.run }}
+    around { |example| expect_to_take_at_least(0.1) { example.run }}
 
     it "#matches?" do
       object = double("element")
@@ -102,7 +102,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
   end
 
   context "#during" do
-    around { |example| should_take_at_least(0.1) { example.run }}
+    around { |example| expect_to_take_at_least(0.1) { example.run }}
 
     it "#matches?" do
       object = double("element", foo?: true)
@@ -173,7 +173,7 @@ describe Watir::RSpec::Matchers::BaseMatcher do
     end    
   end
 
-  def should_take_at_least(seconds)
+  def expect_to_take_at_least(seconds)
     t = Time.now
     yield
     expect(Time.now - t).to be >= seconds

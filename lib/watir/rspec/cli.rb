@@ -8,7 +8,7 @@ module Watir
         def execute
           @options = {}
           parser = OptionParser.new do |opts|
-            opts.banner = "Install watir-rspec configuration into spec_helper file.
+            opts.banner = "Install watir-rspec configuration into spec_helper.rb file.
 
 Usage: watir-rspec [options] install"
 
@@ -66,11 +66,11 @@ RSpec.configure do |config|
   # Include RSpec::Helper into each of your example group for making it possible to
   # write in your examples instead of:
   #   @browser.goto "localhost"
-  #   @browser.text_field(:name => "first_name").set "Bob"
+  #   @browser.text_field(name: "first_name").set "Bob"
   #
   # like this:
   #   goto "localhost"
-  #   text_field(:name => "first_name").set "Bob"
+  #   text_field(name: "first_name").set "Bob"
   #
   # This needs that you've used @browser as an instance variable name in
   # before :all block.
@@ -78,12 +78,12 @@ RSpec.configure do |config|
 
   # Include RSpec::Matchers into each of your example group for making it possible to
   # use #within with some of RSpec matchers for easier asynchronous testing:
-  #   @browser.text_field(:name => "first_name").should exist.within(2)
-  #   @browser.text_field(:name => "first_name").should be_present.within(2)
-  #   @browser.text_field(:name => "first_name").should be_visible.within(2)
+  #   expect(@browser.text_field(name: "first_name")).to exist.within(2)
+  #   expect(@browser.text_field(name: "first_name")).to be_present.within(2)
+  #   expect(@browser.text_field(name: "first_name")).to be_visible.within(2)
   #
   # You can also use #during to test if something stays the same during the specified period:
-  #   @browser.text_field(:name => "first_name").should exist.during(2)
+  #   expect(@browser.text_field(name: "first_name")).to exist.during(2)
   config.include Watir::RSpec::Matchers#{rails_filter}
 end
   ]
@@ -113,7 +113,7 @@ Make sure you run the watir-rspec command within your projects' directory.]
         end
 
         def rails_filter
-          ", :type => :request" if using_rails?
+          ", type: :request" if using_rails?
         end
 
         def using_rails?

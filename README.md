@@ -40,16 +40,16 @@ describe "Google" do
   before { goto "http://google.com" }
   
   it "has search box" do
-    text_field(:name => "q").should be_present
+    expect(text_field(name: "q")).to be_present
   end
   
   it "allows to search" do
-    text_field(:name => "q").set "watir"
-    button(:id => "gbqfb").click
-    results = div(:id => "ires")
-    results.should be_present.within(2)
-    results.lis(:class => "g").map(&:text).should be_any { |text| text =~ /watir/ }
-    results.should be_present.during(1)
+    text_field(name: "q").set "watir"
+    button(id: "gbqfb").click
+    results = div(id: "ires")
+    expect(results).to be_present.within(2)
+    expect(results.lis(class: "g").map(&:text)).to be_any { |text| text =~ /watir/ }
+    expect(results).to be_present.during(1)
   end
 end
 ````
@@ -62,7 +62,7 @@ to the files created during tests.
 ```ruby
 uploaded_file_path = Watir::RSpec.file_path("uploaded.txt")
 File.open(uploaded_file_path, "w") {|file| file.write "Generated File Input"}
-file_field(:name => "upload-file").set uploaded_file_path
+file_field(name: "upload-file").set uploaded_file_path
 ```
 
 ### Rails

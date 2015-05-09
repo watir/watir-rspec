@@ -1,3 +1,7 @@
+### 2.0.3 - 2015/05/09
+
+* Improve readme/documentation.
+
 ### 2.0.2 - 2015/03/21
 
 * Fix delegating methods to browser with blocks having parameters. Closes #12.

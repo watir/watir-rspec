@@ -1,3 +1,7 @@
+### 3.0.0 - 2016/09/24
+
+* Add support for Watir 6.0.
+
 ### 2.0.3 - 2015/05/09
 
 * Improve readme/documentation.

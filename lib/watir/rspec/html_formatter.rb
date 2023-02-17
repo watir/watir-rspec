@@ -16,7 +16,7 @@ module Watir
       # @private
       def initialize(output)
         @output_path = File.expand_path(ENV["WATIR_RESULTS_PATH"] || (output.respond_to?(:path) ? output.path : "tmp/spec-results/index.html"))
-        FileUtils.rm_rf File.dirname(@output_path), :verbose => true if File.exists?(@output_path)
+        FileUtils.rm_rf File.dirname(@output_path), :verbose => true if File.exist?(@output_path)
 
         @output_relative_path = Pathname.new(@output_path).relative_path_from(Pathname.new(Dir.pwd))
         puts "Results will be saved to #{@output_relative_path}"

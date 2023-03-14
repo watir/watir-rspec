@@ -1,3 +1,8 @@
+### 4.0.0 - 2023/03/14
+
+* Add support for Ruby 3.x version.
+* Update Watir dependency to 7.x version.
+
 ### 3.0.0 - 2016/09/24
 
 * Add support for Watir 6.0.

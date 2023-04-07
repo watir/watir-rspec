@@ -10,16 +10,17 @@ module Watir
     # * saves html of the browser upon test failure
     # * saves all files generated/downloaded during the test and shows them in the report
     class HtmlFormatter < ::RSpec::Core::Formatters::HtmlFormatter
-
       ::RSpec::Core::Formatters.register self, *(::RSpec::Core::Formatters::Loader.formatters[::RSpec::Core::Formatters::HtmlFormatter])
+
+      DEFAULT_REPORT_PATH = File.expand_path("tmp/spec-results/index.html")
 
       # @private
       def initialize(output)
-        @output_path = File.expand_path(ENV["WATIR_RESULTS_PATH"] || (output.respond_to?(:path) ? output.path : "tmp/spec-results/index.html"))
-        FileUtils.rm_rf File.dirname(@output_path), :verbose => true if File.exist?(@output_path)
+        @output_path = File.expand_path(ENV["WATIR_RESULTS_PATH"] || output.kind_of?(File) && output.path || DEFAULT_REPORT_PATH)
+        cleanup_report_path(@output_path)
 
-        @output_relative_path = Pathname.new(@output_path).relative_path_from(Pathname.new(Dir.pwd))
-        puts "Results will be saved to #{@output_relative_path}"
+        output_relative_path = Pathname.new(@output_path).relative_path_from(Pathname.new(Dir.pwd))
+        log "results will be saved to #{output_relative_path}"
 
         @files_dir = File.dirname(@output_path)
         FileUtils.mkdir_p(@files_dir)
@@ -57,7 +58,19 @@ module Watir
 
       private
 
-      # @private
+      def cleanup_report_path(path)
+        if File.exist?(path)
+          reports_directory = File.dirname(path)
+
+          if path == DEFAULT_REPORT_PATH
+            log "cleaning up reports path at #{reports_directory}..."
+            FileUtils.rm_rf reports_directory
+          else
+            $stderr.puts "[WARN] #{self.class.name} reports directory automatically not deleted at #{reports_directory} to avoid possible data loss - make sure to do that manually before running specs to avoid this message and clutter from previous runs"
+          end
+        end
+      end
+
       def extra_failure_content(exception)
         return super unless example_group  # apparently there are cases where rspec failures are encountered and the example_group is not set (i.e. nil)
         browser = example_group.before_context_ivars[:@browser] || $browser
@@ -96,6 +109,10 @@ module Watir
         file_name = file_path("screenshot.png", description)
         browser.screenshot.save(file_name)
         file_name
+      end
+
+      def log(message)
+        puts "[#{self.class.name}] #{message}"
       end
 
     end

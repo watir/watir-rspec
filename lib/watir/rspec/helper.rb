@@ -17,20 +17,20 @@ module Watir
       #    # notice that we're calling Watir::Browser#text_field here directly
       #    expect(text_field(id: "foo")).to be_present
       #  end
-      def method_missing(name, *args)
+      def method_missing(name, *args, &block)
         if browser.respond_to?(name)
           Helper.module_eval %Q[
-            def #{name}(*args)
-              if block_given?
-                browser.send(:#{name}, *args, &Proc.new)
+            def #{name}(*args, &block)
+              if block
+                browser.send(:#{name}, *args, &block)
               else
                 browser.send(:#{name}, *args)
               end
             end
           ]
 
-          if block_given?
-            self.send(name, *args, &Proc.new)
+          if block
+            self.send(name, *args, &block)
           else
             self.send(name, *args)
           end

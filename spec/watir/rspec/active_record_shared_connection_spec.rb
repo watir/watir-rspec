@@ -5,7 +5,7 @@ end
 
 describe TestModel do
   context ".connection" do
-    before { described_class.class_variable_set :@@shared_connection, nil }
+    before { ActiveRecord::Base.class_variable_set :@@shared_connection, nil }
 
     it "reuses the connection" do
       expect(described_class).to receive(:retrieve_connection).once.and_return(:established_connection)

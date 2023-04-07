@@ -25,14 +25,14 @@ describe Watir::RSpec::Helper do
       before { @browser = double("browser") }
 
       it "are delegated to browser" do
-        expect(@browser).to receive(:window).with(title: "my_window") { |&block| block.call }
+        expect(@browser).to receive(:window).with({title: "my_window"}) { |&block| block.call }
 
         block_parameter = lambda { "my block content" }
         expect(window(title: "my_window", &block_parameter)).to be == "my block content"
       end
 
       it "having parameters are properly delegated to browser" do
-        expect(@browser).to receive(:window).with(:title => "my_window").and_yield("first", "second")
+        expect(@browser).to receive(:window).with({title: "my_window"}).and_yield("first", "second")
 
         block_parameter = lambda { |parameter_1, parameter_2| [parameter_1, parameter_2] }
         expect(window(title: "my_window", &block_parameter)).to be == ["first", "second"]

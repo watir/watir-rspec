@@ -1,4 +1,10 @@
+### 5.0.0 - 2023/04/07
+
+* Fix a problem of deleting everything from current working directory when using Ruby >= 3.2.2. Closes #18.
+ 
 ### 4.0.0 - 2023/03/14
+
+!!! yanked due to possible data loss when using Ruby 3.2.2 !!!
 
 * Add support for Ruby 3.x version.
 * Update Watir dependency to 7.x version.
